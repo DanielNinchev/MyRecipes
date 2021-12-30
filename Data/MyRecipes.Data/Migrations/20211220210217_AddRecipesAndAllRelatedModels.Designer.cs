@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyRecipes.Data;
 
 namespace MyRecipes.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211220210217_AddRecipesAndAllRelatedModels")]
+    partial class AddRecipesAndAllRelatedModels
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -292,9 +294,6 @@ namespace MyRecipes.Data.Migrations
                     b.Property<int>("RecipeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("RemoteImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AddedByUserId");
@@ -365,9 +364,6 @@ namespace MyRecipes.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OriginalUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PortionsCount")
@@ -502,7 +498,7 @@ namespace MyRecipes.Data.Migrations
                         .HasForeignKey("AddedByUserId");
 
                     b.HasOne("MyRecipes.Data.Models.Recipe", "Recipe")
-                        .WithMany("Images")
+                        .WithMany()
                         .HasForeignKey("RecipeId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -569,8 +565,6 @@ namespace MyRecipes.Data.Migrations
 
             modelBuilder.Entity("MyRecipes.Data.Models.Recipe", b =>
                 {
-                    b.Navigation("Images");
-
                     b.Navigation("Ingredients");
                 });
 #pragma warning restore 612, 618
